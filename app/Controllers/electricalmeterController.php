@@ -1,0 +1,223 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\UserModel;
+use App\Models\CustomersModel;
+use App\Models\VerifierModel;
+use App\Models\PersonnelModel;
+use App\Models\Defaults;
+use App\Models\ElectModel_image;
+use App\Models\PlaceholderModel;
+use Dompdf\Options; 
+
+
+use App\Models\ElectricalMetersModel;
+use App\Models\TestWeightSensitivityTestModel; 
+use App\Models\MultiProductCalibratorStandardModel; //multi-product calibrator details
+use App\Models\MultiProductCalibratorStandardValuesModel; //multi-product calibrator values
+use App\Models\CurrentCoilModel;
+
+
+
+class electricalmeterController extends BaseController{
+	public function worksheet($id = null, $verify = null){
+        $data = [];
+        $VerifierModel = new VerifierModel();
+        $PersonnelModel = new PersonnelModel();
+        $customerModel = new CustomersModel();
+        $placeholderModel = new PlaceholderModel();
+        $standardDetails = new MultiProductCalibratorStandardModel();
+        $standardValues = new MultiProductCalibratorStandardValuesModel();
+        
+        $data['id'] = $id;
+        $data['verifier'] = $VerifierModel->findAll();
+        $data['personnel'] = $PersonnelModel->findAll();
+        $data['standardDetails'] = $standardDetails->where('status', 'active')->findAll();
+        $data['customers'] = $customerModel->findAll();
+        $data['placeholders'] = $placeholderModel->findAll();
+
+        return view('Electricalmeter/electricalmeterWorksheet', $data);        
+    }
+
+    public function get_data_by_id(){
+        $model = new ElectricalMetersModel();
+        $userModel = new UserModel();
+        $idOfCertificate = $this->request->getPost('idOfCertificate');
+        $results['userData'] = $userModel->where('id', session()->get('id'))->first(); 
+        $results['worksheetData'] = $model->where('id', $idOfCertificate)->first();
+        return $this->response->setJSON($results);
+    }
+    public function verifyCorrection(){
+        $mainModel = new ElectricalMetersModel();
+        $data = [
+                'comments' => $this->request->getPost('comments'),
+                'completion' => $this->request->getPost('completion'),
+        ];        
+        $id = $this->request->getPost('idOfCertificate');
+        $mainModel->update($id,$data);
+        return json_encode(['id' => $id]);
+    }
+    public function certificateNumberChecker(){
+        $rml = new ElectricalMetersModel();
+        $certNumToCheck = $this->request->getPost('certificateNumberToCheck');
+        $isValid = 'false';
+        $numberInDatabase = $rml->where('certificateNumber', $certNumToCheck)->countAllResults();
+        if($numberInDatabase > 0){
+                        $isValid = 'false';
+                }else{
+                        $isValid = 'true';
+                }
+        return $isValid;
+    }
+    public function certificateTable(){
+        $data = [];
+        $VerifierModel = new VerifierModel();
+        $PersonnelModel = new PersonnelModel();
+        $moduleModel = new ElectricalMetersModel();
+        $data['verifier'] = $VerifierModel->findAll();
+        $data['personnel'] = $PersonnelModel->findAll();
+        $data['tableData'] = $moduleModel->findAll();
+        return view('Electricalmeter/electricalmeterTable', $data);
+    }
+    public function worksheetPrint($id, $verify = null){
+        $rml = new ElectricalMetersModel();
+        $VerifierModel = new VerifierModel();
+        $PersonnelModel = new PersonnelModel();
+        $userModel = new UserModel();
+
+        $data['verifier'] = $VerifierModel->findAll();
+        $data['personnel'] = $PersonnelModel->findAll();
+        $data['datas'] = $rml->where('id', $id)->first();
+        $data['forVerification'] = $verify;
+        $data['user'] = $userModel->where('id', session()->get('id'))->first(); 
+        if($verify == 'forVerification'){
+                $dataToUpdate = [
+                'completion' => 'On-going verification'
+                ]; 
+                $rml->update($id,$dataToUpdate);
+        }
+        return view('Refractometer/refractometerPrintView',  $data);
+    }
+    public function deleteWorksheet($id){
+        $model = new ElectricalMetersModel;
+        $model->where('id', $id)->delete(); 
+        return redirect()->to(base_url('electricalmeter/certificates'))->with('status', 'Data Deleted Successfully!');
+    }
+    public function addNewWorksheetData(){
+        $mainModel = new ElectricalMetersModel();
+        $data = [
+                'certificateNumber' => $this->request->getPost('calibrationCertificate'),
+                'standard' => $this->request->getPost('standard'),
+                'customerInfo' => $this->request->getPost('customerInfo'),
+                'equipmentInfo' => $this->request->getPost('equipmentInfo'),
+                'environmentInfo' => $this->request->getPost('environmentInfo'),
+                'dataInputs' => $this->request->getPost('dataInputs'),
+                'calculatedData' => $this->request->getPost('calculatedData'),
+                'completion' => $this->request->getPost('completion'),
+                'calibrationOfficer' => $this->request->getPost('calibrationOfficer'),
+                'checkedBy' => $this->request->getPost('checkedBy'),
+                'verifierPosition' => $this->request->getPost('verifierPosition'),
+                'calibratorAccountEmail' => $this->request->getPost('calibratorAccountEmail'),
+                'calibratorAccountID' => $this->request->getPost('calibratorAccountID'),
+                'verifierEmail' => $this->request->getPost('verifierEmail'),
+        ];        
+        $mainModel->insert($data);
+        $worksheetID = $mainModel->insertID();
+        return json_encode(['id' => $worksheetID]);
+    }
+    public function updateWorksheetData(){
+        $mainModel = new ElectricalMetersModel();
+        $data = [
+                'certificateNumber' => $this->request->getPost('calibrationCertificate'),
+                'standard' => $this->request->getPost('standard'),
+                'customerInfo' => $this->request->getPost('customerInfo'),
+                'equipmentInfo' => $this->request->getPost('equipmentInfo'),
+                'environmentInfo' => $this->request->getPost('environmentInfo'),
+                'dataInputs' => $this->request->getPost('dataInputs'),
+                'calculatedData' => $this->request->getPost('calculatedData'),
+                'completion' => $this->request->getPost('completion'),
+                'calibrationOfficer' => $this->request->getPost('calibrationOfficer'),
+                'checkedBy' => $this->request->getPost('checkedBy'),
+                'verifierPosition' => $this->request->getPost('verifierPosition'),
+                'calibratorAccountEmail' => $this->request->getPost('calibratorAccountEmail'),
+                'calibratorAccountID' => $this->request->getPost('calibratorAccountID'),
+                'verifierEmail' => $this->request->getPost('verifierEmail'),
+        ];        
+        $id = $this->request->getPost('idOfCertificate');
+        $mainModel->update($id,$data);
+        return json_encode(['id' => $id]);
+    }
+    public function updatePlaceholder(){
+        $rml = new ElectricalMetersModel();
+        $data = [
+            'settingCalibrationProcedureAndTraceability' => $this->request->getPost('settingCalibrationProcedureAndTraceability'),
+            'settingUncertaintyOfMeasurement' => $this->request->getPost('settingUncertaintyOfMeasurement'),
+            'settingCalibrationResults' => $this->request->getPost('settingCalibrationResults'),
+            'settingRemarks' => $this->request->getPost('settingRemarks'),            
+        ];        
+        $idOfCert = $this->request->getPost('idOfCertificate');
+        $rml->update($idOfCert,$data);
+        return redirect()->to(base_url('electricalmeter/worksheet/'.$idOfCert))->with('status', 'Data Updated Successfully!');
+    }
+
+    function htmlToPDF($id){
+        $rml = new ElectricalMetersModel();
+        $placeholders = new PlaceholderModel();
+        $options = new Options();
+        $options->set('isJavascriptEnabled', TRUE); 
+        $options->set('isHtml5ParserEnabled', TRUE);     
+        $data['dataFromDB'] = $rml->where('id', $id)->first();
+        $data['placeholders'] = $placeholders->findAll();
+        $data['datePrev'] = $this->request->getPost('datePrev');
+        $data['imageDraft'] = $this->request->getPost('imageDraft');
+        $PDFState = $this->request->getPost('typeOfPrint');
+        $certNumberPrev = $this->request->getPost('certNumberPrev');
+        $customPaper = array(0, 0, 595.28, 841.89); 
+        $dompdf = new \Dompdf\Dompdf($options); 
+        $dompdf->loadHtml(view('Refractometer/refractometerCertificate', $data), 'UTF-8');
+        $dompdf->setPaper('a4', 'portrait');
+        $dompdf->render();
+        if($PDFState == 'preview' || $PDFState == 'fullPreview'){
+            $dompdf->stream('Certificate No.'.$certNumberPrev.".pdf",array("Attachment" => 0));
+        }
+        if($PDFState == 'download'){
+            $dompdf->stream('Certificate No.'.$certNumberPrev.".pdf",array("Attachment" => 1));
+        }
+    }
+    function generateReport(){
+        $id = $this->request->getPost('certificateId');
+        $draft = $this->request->getPost('certificateDraft');
+        $download = $this->request->getPost('certificateDownload');
+        $html = $_POST['chart_input'];
+        $data["img"] = ["image"=>$html];
+        $data['imageDraft'] = $draft;
+        $PDFState = $download;
+
+        $rml = new ElectricalMetersModel();
+        $standardDetails = new MultiProductCalibratorStandardModel();
+        $placeholders = new PlaceholderModel();
+        $options = new Options();
+        
+        $options->set('isJavascriptEnabled', TRUE); 
+        $options->set('isHtml5ParserEnabled', TRUE);     
+        
+        $data['dataFromDB'] = $rml->where('id', $id)->first();
+        $data['placeholders'] = $placeholders->findAll();
+        $data['datePrev'] = $this->request->getPost('datePrev');
+        $data['standardDetails'] = $standardDetails->where('status', 'active')->findAll();
+
+        $certificateLabel = $this->request->getPost('certificateLabel');
+        $customPaper = array(0, 0, 595.28, 841.89); 
+        $dompdf = new \Dompdf\Dompdf($options); 
+        $dompdf->loadHtml(view('Electricalmeter/electricalmeterCertificate', $data), 'UTF-8');
+        $dompdf->setPaper('a4', 'portrait');
+        $dompdf->render();
+        if($PDFState == '0'){
+            $dompdf->stream($certificateLabel.".pdf",array("Attachment" => 0));
+        }
+        if($PDFState == '1'){
+            $dompdf->stream($certificateLabel.".pdf",array("Attachment" => 1));
+        }   
+    }
+}

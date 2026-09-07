@@ -1,0 +1,17 @@
+.comments{
+    position:fixed;
+    align-items: center;
+    border: 0px solid;
+    right: 7%;
+    top:3%;
+    max-Width: 10%;
+    z-index: 99;
+    background-color: antiquewhite;
+    padding: 1em;
+    box-shadow: 0px 0px 15px -2px rgba(0,0,0,0.44);
+}
+.commentsBody{
+    word-wrap: break-word;
+    height: 10em; 
+    overflow: scroll
+}
