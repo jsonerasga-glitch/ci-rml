@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8080:80"
+    environment:
+      CI_ENVIRONMENT: development
+      app.baseURL: http://localhost:8080/
+      database.default.hostname: db
+      database.default.database: rml
+      database.default.username: rml
+      database.default.password: rml_password
+      database.default.DBDriver: MySQLi
+      database.default.port: 3306
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads:/var/www/html/writable/uploads
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: rml
+      MYSQL_USER: rml
+      MYSQL_PASSWORD: rml_password
+      MYSQL_ROOT_PASSWORD: change_this_root_password
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+  uploads:
