@@ -168,6 +168,24 @@ class electricalmeterController extends BaseController{
         $options->set('isJavascriptEnabled', TRUE); 
         $options->set('isHtml5ParserEnabled', TRUE);     
         $data['dataFromDB'] = $rml->where('id', $id)->first();
+        if($incomplete = $this->incompleteWorksheetResponse($data['dataFromDB'])){
+            return $incomplete;
+        }
+
+        // every measurement table entered on the worksheet needs saved results before it can be printed
+        $inputs = json_decode($data['dataFromDB']['dataInputs'], true);
+        $results = json_decode($data['dataFromDB']['calculatedData'], true);
+        $missingTables = [];
+        foreach(array_keys($inputs) as $key){
+            if(preg_match('/^rangeTable(\d+)$/', $key, $match) && !isset($results['table'.$match[1]])){
+                $missingTables[] = $match[1];
+            }
+        }
+        if(count($missingTables)){
+            return $this->response->setStatusCode(422)
+                ->setBody('Results for table(s) '.implode(', ', $missingTables).' have not been calculated. Open the worksheet, recalculate and save it, then generate the certificate again.');
+        }
+
         $data['placeholders'] = $placeholders->findAll();
         $data['datePrev'] = $this->request->getPost('datePrev');
         $data['imageDraft'] = $this->request->getPost('imageDraft');
@@ -203,6 +221,24 @@ class electricalmeterController extends BaseController{
         $options->set('isHtml5ParserEnabled', TRUE);     
         
         $data['dataFromDB'] = $rml->where('id', $id)->first();
+        if($incomplete = $this->incompleteWorksheetResponse($data['dataFromDB'])){
+            return $incomplete;
+        }
+
+        // every measurement table entered on the worksheet needs saved results before it can be printed
+        $inputs = json_decode($data['dataFromDB']['dataInputs'], true);
+        $results = json_decode($data['dataFromDB']['calculatedData'], true);
+        $missingTables = [];
+        foreach(array_keys($inputs) as $key){
+            if(preg_match('/^rangeTable(\d+)$/', $key, $match) && !isset($results['table'.$match[1]])){
+                $missingTables[] = $match[1];
+            }
+        }
+        if(count($missingTables)){
+            return $this->response->setStatusCode(422)
+                ->setBody('Results for table(s) '.implode(', ', $missingTables).' have not been calculated. Open the worksheet, recalculate and save it, then generate the certificate again.');
+        }
+
         $data['placeholders'] = $placeholders->findAll();
         $data['datePrev'] = $this->request->getPost('datePrev');
         $data['standardDetails'] = $standardDetails->where('status', 'active')->findAll();

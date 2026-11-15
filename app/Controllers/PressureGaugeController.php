@@ -294,8 +294,18 @@ class PressureGaugeController extends BaseController{
                 $PDFState = $this->request->getPost('typeOfPrint');
                 $certNumberPrev = $this->request->getPost('certNumberPrev');
                 $customPaper = array(0, 0, 595.28, 841.89); 
-                $dompdf = new \Dompdf\Dompdf($options); 
-                $dompdf->loadHtml(view('PressureGauge/pressureGaugeCertificate', $data), 'UTF-8');
+                $dompdf = new \Dompdf\Dompdf($options);
+                $obLevel = ob_get_level();
+                try{
+                    $html = view('PressureGauge/pressureGaugeCertificate', $data);
+                }catch(\RangeException $e){
+                    // drop the partially rendered certificate left in the view's output buffer
+                    while(ob_get_level() > $obLevel){
+                        ob_end_clean();
+                    }
+                    return $this->response->setStatusCode(422)->setBody($e->getMessage());
+                }
+                $dompdf->loadHtml($html, 'UTF-8');
                 $dompdf->setPaper('a4', 'portrait');
                 $dompdf->render();
                 if($PDFState == 'preview' || $PDFState == 'fullPreview'){
@@ -369,8 +379,18 @@ class PressureGaugeController extends BaseController{
 
                 $certificateLabel = $this->request->getPost('certificateLabel');
                 $customPaper = array(0, 0, 595.28, 841.89); 
-                $dompdf = new \Dompdf\Dompdf($options); 
-                $dompdf->loadHtml(view('PressureGauge/pressureGaugeCertificate', $data), 'UTF-8');
+                $dompdf = new \Dompdf\Dompdf($options);
+                $obLevel = ob_get_level();
+                try{
+                    $html = view('PressureGauge/pressureGaugeCertificate', $data);
+                }catch(\RangeException $e){
+                    // drop the partially rendered certificate left in the view's output buffer
+                    while(ob_get_level() > $obLevel){
+                        ob_end_clean();
+                    }
+                    return $this->response->setStatusCode(422)->setBody($e->getMessage());
+                }
+                $dompdf->loadHtml($html, 'UTF-8');
                 $dompdf->setPaper('a4', 'portrait');
                 $dompdf->render();
                 if($PDFState == '0'){

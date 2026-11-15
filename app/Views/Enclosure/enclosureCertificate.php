@@ -544,7 +544,7 @@
         return $cmc;
     }
 
-    function dynamic_chamber_temperature_accuracy($specificationsData, $dataInputs, $calculatedData){
+    function dynamic_chamber_temperature_accuracy($specificationsData, $dataInputs, $calculatedData, $cmc_array = []){
         $channelCount = count((array)$calculatedData->table1->array_channels_used);
 
         $center_channel = $calculatedData->table1->variables->center;
@@ -605,7 +605,7 @@
 
             $mean_indicator_read = matchDecimal($calculatedData->$tableKey->variables->averageOfUUCIndication, $number_decimal_readability);
 
-            $uncert_cmc_checked = check_cmc($specificationsData, $calculatedData->$tableKey->variables->testPoint, $calculatedData->$tableKey->uncertainty->expandedUncertainty);
+            $uncert_cmc_checked = check_cmc($specificationsData, $calculatedData->$tableKey->variables->testPoint, $calculatedData->$tableKey->uncertainty->expandedUncertainty, $cmc_array);
             $uncertainty = sigFig($uncert_cmc_checked, 2);
 
             $channels = $calculatedData->$tableKey->array_channels_used;
@@ -1008,8 +1008,6 @@
         }        
         body{
             font-family: "source_sans_proregular", Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;     
-            top:10px;
-            position: fixed;
             width: 90%;
         }
         .infoTable{
@@ -1056,24 +1054,25 @@
 
         .item .label, 
         .item .label i {
-            width: 45%;
+            width: 44%;
             display: inline-block;
             white-space: nowrap;
-            margin-right:4%;
+            margin-right:1%;
         }
 
         .item .between {
-            width: 5%;
+            width: 3%;
             padding: 0;
             margin: 0;
         }
 
         .item .text {
-            width: 55%;
+            width: 48%;
             padding: 0;
             margin: 0;
         }
 
+        p[style*="position: absolute"], p[style*="position:absolute"] { white-space: nowrap; }
         @page { margin: 100px 50px; border:1px red solid;}
         header { position: fixed; top: -80px; left: 0px; right: 0px; }
         
@@ -1194,7 +1193,7 @@
         <div style="position: absolute; top:53; left:25%; font-size:7;">
             <p style='position: absolute;'>RML Bldg., DOST CALABARZON Complex, Jamboree Road, Timugan, Los Baños, Laguna 4030</p>
         </div>
-        <div style="position: absolute; top:65;font-size:7;">
+        <div style="position: absolute; top:65;font-size:7; width:100%;">
             <?php use App\Models\About;
             $model = new About();
             $about = $model->findAll();
@@ -1357,7 +1356,7 @@
                         </div>
                         <table class='resultTable' style="min-width: 95%;line-height: 1;" id="">
                             <?php  
-                                echo dynamic_chamber_temperature_accuracy($specificationsData,$dataInputs,$calculatedData);
+                                echo dynamic_chamber_temperature_accuracy($specificationsData,$dataInputs,$calculatedData,$cmc_array);
                             ?>
                         </table>
                     </div>
@@ -1648,7 +1647,7 @@
                         </div>
                         <table class='resultTable' style="min-width: 95%;line-height: 1;" id="">
                             <?php  
-                                echo dynamic_chamber_temperature_accuracy($specificationsData,$dataInputs,$calculatedData);
+                                echo dynamic_chamber_temperature_accuracy($specificationsData,$dataInputs,$calculatedData,$cmc_array);
                             ?>
                         </table>
                     </div>

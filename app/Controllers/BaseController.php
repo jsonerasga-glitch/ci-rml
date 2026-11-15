@@ -45,4 +45,23 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
 	}
+
+	/**
+	 * Returns a 422 response when a worksheet record has no saved calibration
+	 * data (so no certificate can be rendered), or null when it is usable.
+	 */
+	protected function incompleteWorksheetResponse($record, array $fields = ['dataInputs', 'calculatedData'])
+	{
+		foreach ($fields as $field)
+		{
+			$value = $record[$field] ?? null;
+			if ($record === null || $value === null || trim($value) === '' || empty(json_decode($value, true)))
+			{
+				return $this->response->setStatusCode(ResponseInterface::HTTP_UNPROCESSABLE_ENTITY)
+					->setBody('This worksheet has no calibration data yet. Fill in and save the worksheet before generating a certificate.');
+			}
+		}
+
+		return null;
+	}
 }

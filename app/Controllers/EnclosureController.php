@@ -203,6 +203,9 @@ class EnclosureController extends BaseController{
         $options->set('isHtml5ParserEnabled', TRUE);     
         
         $data['dataFromDB'] = $rml->where('id', $id)->first();
+        if($incomplete = $this->incompleteWorksheetResponse($data['dataFromDB'])){
+            return $incomplete;
+        }
         $data['placeholders'] = $placeholders->findAll();
         $data['datePrev'] = $this->request->getPost('datePrev');
         $data['standardDetails'] = $standardDetails->where('status', 'active')->findAll();

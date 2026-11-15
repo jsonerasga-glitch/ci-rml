@@ -190,10 +190,11 @@ class WeighingScaleController extends BaseController{
                 $dompdf->stream('Certificate No.'.$certNumberPrev.".pdf",array("Attachment" => 1));
             }
         } catch (\Throwable $th) {
-            return $th;
+            log_message('error', 'Weighing scale certificate failed: {message} in {errorFile}:{errorLine}', ['message' => $th->getMessage(), 'errorFile' => $th->getFile(), 'errorLine' => $th->getLine()]);
+            return $this->response->setStatusCode(500)->setBody('The certificate could not be generated: ' . esc($th->getMessage()));
         }
-        
-  
+
+
     }
    
 

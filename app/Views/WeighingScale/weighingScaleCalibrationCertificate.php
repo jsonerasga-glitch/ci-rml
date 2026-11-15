@@ -75,7 +75,8 @@
 
     function uncertaintyMeasurement($specific,$calculated,$cmc){
         $maxCapacity        = $specific['specifications']['maxCapacity'];
-        $equipment_class    = $specific['specifications']['equipment_class'];
+        // worksheets saved before the class field existed default to the form's "None Indicated"
+        $equipment_class    = $specific['specifications']['equipment_class'] ?? 'none';
         $readabilityUnit    = $specific['specifications']['readabilityUnit'];
         $expandedUncertain  = $calculated['calculated']['expandedUncertaintyCalculated'];
 
@@ -862,7 +863,7 @@
                                 <td>Std. Dev. (<?= $repeatability['repeatabilityTable']['repeatabilityIndicationUnit']; ?>)</td>
                                 <!-- <td><?= matchDecimal(repeatabilityStdDev($repeatability), $readabilityDecimalPoints)?></td> -->
                                 <!-- <td><?= matchDecimal($repeatability['repeatabilityTable']['datas']['repeatabilitySD'], $readabilityDecimalPoints)?></td> -->
-                                 <td><?= sigFig($repeatability['repeatabilityTable']['datas']['repeatabilitySD'], 2)?></td>
+                                 <td><?= $repeatability['repeatabilityTable']['datas']['repeatabilitySD'] === '' ? '' : sigFig($repeatability['repeatabilityTable']['datas']['repeatabilitySD'], 2)?></td>
                             </tr>
                         </tbody>
                     </table>

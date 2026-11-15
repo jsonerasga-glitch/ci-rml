@@ -11,7 +11,8 @@ use App\Models\ImageModel;
 use App\Models\PlaceholderModel;
 use App\Models\CMCmodel;
 
-use Dompdf\Options; 
+use Dompdf\Options;
+use CodeIgniter\HTTP\ResponseInterface;
 
 
 // use App\Models\PressureGaugeStandardModel;
@@ -317,6 +318,11 @@ class ElectronicBalanceController extends BaseController{
                 $options->set('isHtml5ParserEnabled', TRUE);     
                 
                 $data['dataFromDB'] = $rml->where('id', $id)->first();
+
+                if($incomplete = $this->incompleteWorksheetResponse($data['dataFromDB'], ['environmentInfo', 'dataInputs', 'calculatedData'])){
+                    return $incomplete;
+                }
+
                 $data['placeholders'] = $placeholders->findAll();
                 $data['cmc'] = $cmc->where('modulenumber', '1')->findAll();
                 $data['datePrev'] = $this->request->getPost('datePrev');

@@ -238,6 +238,9 @@ class GlasswareController extends BaseController{
         $options->set('isHtml5ParserEnabled', TRUE);     
         
         $data['dataFromDB'] = $rml->where('id', $id)->first();
+        if($incomplete = $this->incompleteWorksheetResponse($data['dataFromDB'])){
+            return $incomplete;
+        }
         $data['placeholders'] = $placeholders->findAll();
         $data['datePrev'] = $this->request->getPost('datePrev');
 
@@ -245,6 +248,11 @@ class GlasswareController extends BaseController{
         $data['standardBalanceDetails'] = $standardBalanceDetails->where('status', 'active')->findAll();
         $data['standardThermometerDetails'] = $standardThermometerDetails->where('status', 'active')->findAll();
         $data['cmc_array'] = $cmc->where('modulenumber', '9')->findAll();
+        // The certificate compares uncertainties against the lab's CMC; without it the reported uncertainty would be wrong
+        if(empty($data['cmc_array'])){
+            return $this->response->setStatusCode(422)
+                ->setBody('No CMC is configured for Glassware yet. Set it up with the CMC editor on the Glassware worksheet, then generate the certificate again.');
+        }
 
         $certificateLabel = $this->request->getPost('certificateLabel');
         $customPaper = array(0, 0, 595.28, 841.89); 
