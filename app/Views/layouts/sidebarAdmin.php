@@ -1,3 +1,9 @@
+<?php
+  // Which modules/standards are listed: app/Config/CalibrationModules.php
+  $calConfig    = config('CalibrationModules');
+  $calModules   = $calConfig->visible();
+  $calStandards = $calConfig->visibleStandards();
+?>
 <?php 
 header("X-Frame-Options: SAMEORIGIN");
 ?>
@@ -56,83 +62,26 @@ header("X-Frame-Options: SAMEORIGIN");
       <li class="nav-item " id='worksheet'>
         <a href="" class="nav-link with-sub"><i data-feather="clipboard"></i><span>Worksheets</span></a>
         <nav class="nav-sub">
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/testWeightAddDataView')?>'"  class="sub-link " id='worksheet1' >Test Weight</a> -->
-          <a href="#" onclick="window.location.href = '<?= base_url('/testWeight/worksheet')?>'"  class="sub-link " id='worksheet1' >Test Weight</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/electronicBalance/worksheet')?>'"  class="sub-link " id='worksheet2' >Electronic Balance</a>
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/electHome')?>'"  class="sub-link " id='worksheet2' >Electronic Balance</a> -->
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/weighingScaleAddNew')?>'"  class="sub-link " id='worksheet3' >Weighing Scale</a> -->
-          <a href="#" onclick="window.location.href = '<?= base_url('/weighingScale/worksheet')?>'"  class="sub-link " id='worksheet3' >Weighing Scale</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/pressureGauge/worksheet')?>'"  class="sub-link " id='worksheet4' >Pressure Gauge</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/digitalThermometer/worksheet')?>'"  class="sub-link " id='worksheet5' >Thermometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='worksheet6' >LIG Thermometer</a>
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/thermoAdd')?>'"  class="sub-link " id='worksheet7' >Thermo-Hygrometer</a> -->
-          <a href="#" onclick="window.location.href = '<?= base_url('/thermohygrometer/worksheet')?>'"  class="sub-link " id='worksheet7' >Thermo-Hygrometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/enclosure/worksheet')?>'"  class="sub-link my-2" id='worksheet8' >Enclosure / Autoclave / Waterbath</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/glassware/worksheet')?>'"  class="sub-link" id='worksheet9' >Glassware / POVA</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='worksheet10' >POVA</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/electricalmeter/worksheet')?>'"  class="sub-link" id='worksheet11' >Electrical Meters / DMM</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='worksheet12' >DMM</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/digitalTimer/worksheet')?>'"  class="sub-link " id='worksheet13' >Timer / Stopwatch</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/pHMeter/worksheet')?>'"  class="sub-link my-2" id='worksheet14' >pH Meter</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/refractometer/worksheet')?>'"  class="sub-link" id='worksheet15' >Refractometer</a>
-
-          <a href="#" onclick="window.location.href = '<?= base_url('/temperaturecontroll/worksheet')?>' "  class="sub-link my-2" id='worksheet16' >Temperature Controller</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/caliper/worksheet')?>'"  class="sub-link" id='worksheet17' >Caliper / Micrometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='worksheet18' >Micrometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='worksheet19' >Rule</a>
+          <?php foreach ($calModules as $m): ?>
+          <a href="#" onclick="window.location.href = '<?= base_url($m['worksheet'])?>'" class="sub-link" id='worksheet<?= $m['n'] ?>'><?= esc($m['label']) ?></a>
+          <?php endforeach; ?>
 
         </nav>
       </li>
       <li class="nav-item " id='certificate'>
         <a href="" class="nav-link with-sub"><i data-feather="monitor"></i><span>Certificates</span></a>
         <nav class="nav-sub">
-          <a href="#" onclick="window.location.href = '<?= base_url('/testWeightTable')?>'"  class="sub-link " id='certificate1' >Test Weight</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/electronicBalance/certificates')?>'"  class="sub-link " id='certificate2' >Electronic Balance</a> 
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/electTable')?>'"  class="sub-link " id='certificate2' >Electronic Balance</a> -->
-          <a href="#" onclick="window.location.href = '<?= base_url('/weighingScaleTable')?>'"  class="sub-link " id='certificate3' >Weighing Scale</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/pressureGauge/certificates')?>'"  class="sub-link " id='certificate4' >Pressure Gauge</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/digitalThermometer/certificates')?>'"  class="sub-link " id='certificate5' >Thermometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='certificate6' >LIG Thermometer</a>
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/thermoTable')?>'"  class="sub-link " id='certificate7' >Thermo-Hygrometer</a> -->
-          <a href="#" onclick="window.location.href = '<?= base_url('/thermohygrometer/certificates')?>'"  class="sub-link " id='certificate7' >Thermo-Hygrometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/enclosure/certificates')?>'"  class="sub-link my-2" id='certificate8' >Enclosure / Autoclave / Waterbath</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/glassware/certificates')?>'"  class="sub-link" id='certificate9' >Glassware / POVA</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='certificate10' >POVA</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/electricalmeter/certificates')?>'"  class="sub-link" id='certificate11' >Electrical Meters</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='certificate12' >DMM</a> 
-          <a href="#" onclick="window.location.href = '<?= base_url('/digitalTimer/certificates')?>'"  class="sub-link " id='certificate13' >Timer / Stopwatch</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/pHMeter/certificates')?>'"  class="sub-link" id='certificate14' >pH Meter</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/refractometer/certificates')?>'"  class="sub-link" id='certificate15' >Refractometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/temperaturecontroll/certificates')?>'"  class="sub-link" id='certificate16' >Temperature Controller</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/caliper/certificates')?>'"  class="sub-link" id='certificate17' >Caliper / Micrometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='certificate18' >Micrometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'"  class="sub-link disabled d-none" id='certificate19' >Rule</a>
+          <?php foreach ($calModules as $m): ?>
+          <a href="#" onclick="window.location.href = '<?= base_url($m['certificates'])?>'" class="sub-link" id='certificate<?= $m['n'] ?>'><?= esc($m['label']) ?></a>
+          <?php endforeach; ?>
         </nav>
       </li>
       <li class="nav-item" id='standard'>
         <a href="" class="nav-link with-sub"><i data-feather="archive"></i><span>Standards</span></a>
-        <nav class="nav-sub"> 
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/referenceWeight')?>'" class="sub-link" id='standard1'>Reference Weight</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/pressureGauge/standardTable')?>'" class="sub-link" id='standard2'>Test Gauge</a>
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/thermoStandardTable')?>'" class="sub-link" id='standard3'>Reference Thermometer</a> -->
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/temperatureSource')?>'" class="sub-link" id='standard4'>Temperature Source</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/chamber')?>'" class="sub-link" id='standard18'>Chamber</a>
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/standard/thermoHygrometer')?>'" class="sub-link my-2" id='standard5'>Reference Thermo-Hygrometer</a> -->
-          <!-- <a href="#" onclick="window.location.href = '<?= base_url('/thermoStandardTable')?>'" class="sub-link my-2" id='standard5'>Reference Thermo-Hygrometer</a> -->
-          <a href="#" onclick="window.location.href = '<?= base_url('/thermoStandardTable')?>'" class="sub-link my-2" id='standard5'>Reference Thermometer / Thermo-Hygrometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/balance')?>'" class="sub-link " id='standard6'>Balance</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/barometer')?>'" class="sub-link" id='standard7'>Barometer</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/multiProductCalibrator')?>'" class="sub-link" id='standard8'>Multi-Product Calibrator</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'" class="sub-link disabled d-none" id='standard9'>Proom Calibrator</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/digitalTimer')?>'" class="sub-link my-2" id='standard10'>High Res Programmable Timer / Counter</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'" class="sub-link disabled d-none" id='standard11'>Reference Stopwatch</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/gaugeBlock')?>'" class="sub-link" id='standard12'>Gauge Block</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/dashboard')?>'" class="sub-link disabled d-none" id='standard13'>Reference Rule</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/tempRecorder')?>'" class="sub-link my-3" id='standard14'>Temperature Recorder / Wireless Temperature Logger</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/wirelessTempLogger')?>'" class="sub-link d-none" id='standard15'>Wireless Temperature Logger</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/bufferSolution')?>'" class="sub-link my-2" id='standard16'>Buffer Solution</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/documentingProcessCalibrator')?>'" class="sub-link my-2" id='standard17'>Documenting Process Calibrator</a>
-          <a href="#" onclick="window.location.href = '<?= base_url('/standard/currentCoil')?>'" class="sub-link my-2" id='standard19'>Current Coil</a>
+        <nav class="nav-sub">
+          <?php foreach ($calStandards as $sd): ?>
+          <a href="#" onclick="window.location.href = '<?= base_url($sd[1])?>'" class="sub-link" id='<?= $sd[2] ?>'><?= esc($sd[0]) ?></a>
+          <?php endforeach; ?>
           
         </nav>
       </li> 
@@ -197,9 +146,12 @@ header("X-Frame-Options: SAMEORIGIN");
   var active = '<?= $active?>';
   var show = '<?= $show?>';
   
-  document.getElementById(active).classList.add("active");
-  document.getElementById(show).classList.add("active");
-  document.getElementById(show).classList.add("show");
+  // Pages of hidden modules still pass their menu ids, so guard against missing elements.
+  if (document.getElementById(active)) document.getElementById(active).classList.add("active");
+  if (document.getElementById(show)) {
+    document.getElementById(show).classList.add("active");
+    document.getElementById(show).classList.add("show");
+  }
 </script>
 
 <script defer>

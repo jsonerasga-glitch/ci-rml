@@ -66,168 +66,23 @@
         <label class="content-label"><b>Dashboard</b></label>
         <hr>
         <br>
-         <div class="container">
-            <div class="row">
-                <div class="card-group">
-                    <div class="card">
+        <?php $calModules = config('CalibrationModules')->visible(); /* edit app/Config/CalibrationModules.php */ ?>
+        <div class="container">
+            <div class="row g-3">
+                <?php foreach ($calModules as $m): ?>
+                <div class="col-md-4">
+                    <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Electronic Balance</h5>
+                            <h5 class="card-title"><?= esc($m['label']) ?></h5>
                             <p class="card-text"></p>
                             <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/electronicBalance/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/electronicBalance/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Thermo-Hygrometer</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/thermohygrometer/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/thermohygrometer/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Test Weight</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/testWeight/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/testWeightTable')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Weighing Scale</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/weighingScale/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/weighingScaleTable')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Thermometer</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/digitalThermometer/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/digitalThermometer/certificates')?>" target="_blank">Certificates</a>
+                                <a type="button" class="btn btn-primary" href="<?= base_url($m['worksheet'])?>" target="_blank">Worksheet</a>
+                                <a type="button" class="btn btn-primary" href="<?= base_url($m['certificates'])?>" target="_blank">Certificates</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-4">
-                <div class="card-group">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Digital Timer</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/digitalTimer/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/digitalTimer/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Pressure Gauge</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/pressureGauge/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/pressureGauge/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">PH Meter</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/pHMeter/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/pHMeter/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Volumetric</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/glassware/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/glassware/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Temperature Controller</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/temperaturecontroll/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/temperaturecontroll/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="card-group">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Enclosure</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/enclosure/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/enclosure/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Water Bath / Autoclave</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/enclosure/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/enclosure/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Refractometer</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/refractometer/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/refractometer/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Caliper / Micrometer</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/caliper/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/caliper/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Electrical Meter</h5>
-                            <p class="card-text"></p>
-                            <div class="btn-group" role="group">
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/electricalmeter/worksheet')?>" target="_blank">Worksheet</a>
-                                <a type="button" class="btn btn-primary" href="<?= base_url('/electricalmeter/certificates')?>" target="_blank">Certificates</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
         <br>

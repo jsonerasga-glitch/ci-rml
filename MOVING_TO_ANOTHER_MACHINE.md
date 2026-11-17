@@ -68,6 +68,31 @@ php spark serve             # or point your web server at /public
 To overwrite a database that already has data: set `RML_FORCE_SEED=1` in the
 environment and run the seeder again.
 
+## Sample / showcase data (optional)
+
+Nine fictitious worksheets (3 per enabled module, at the Pending, For Verification and
+For printing stages) plus sample customers and two logins, for demos:
+
+```bash
+php spark db:seed SampleShowcaseSeeder                                  # without Docker
+docker compose exec app php spark db:seed SampleShowcaseSeeder          # with Docker
+```
+
+Logins (admin login page `/adminLogin`, password `Sample@2026`):
+`sample.officer@rml.local` and `sample.verifier@rml.local`. Re-running the seeder resets
+the sample records; real records are never touched. The data is in
+`app/Database/Data/sample_showcase.json`.
+
+Remove the sample data when you are done (real records stay as they are):
+
+```bash
+php spark db:seed RemoveSampleShowcaseSeeder
+docker compose exec app php spark db:seed RemoveSampleShowcaseSeeder    # with Docker
+```
+
+Run `RemoveSampleShowcaseSeeder` before `php spark db:export`, so the samples are not
+copied into `data.sql`.
+
 ## Notes
 
 - **Table-name case.** The code uses `imageTable` for the table `imagetable`. Windows

@@ -109,7 +109,15 @@ class KpiController extends BaseController
 					return '';
 				};
 
+				// Submit stores {"ids":[],"comment":""}; a verifier's return adds
+				// highlighted field ids and/or remarks. Only the latter means "returned".
 				$comments = trim((string) ($r['comments'] ?? ''));
+				$parsed   = json_decode($comments, true);
+				if (is_array($parsed)) {
+					$returned = ! empty($parsed['ids']) || trim((string) ($parsed['comment'] ?? '')) !== '';
+				} else {
+					$returned = ! in_array($comments, ['', '[]', '{}', 'null'], true);
+				}
 
 				$rows[] = [
 					'module'             => $module,
@@ -130,9 +138,9 @@ class KpiController extends BaseController
 					'status'             => trim((string) ($r['completion'] ?? '')) ?: 'Pending',
 					'calibrationOfficer' => trim((string) ($r['calibrationOfficer'] ?? '')),
 					'checkedBy'          => trim((string) ($r['checkedBy'] ?? '')),
-					// Correction comments are kept after resubmission, so a non-empty
-					// value means the worksheet was returned at least once.
-					'returned'           => ! in_array($comments, ['', '[]', '{}', 'null'], true),
+					// Correction remarks are kept after resubmission, so remarks or
+					// highlighted fields mean the worksheet was returned at least once.
+					'returned'           => $returned,
 				];
 			}
 		}
