@@ -130,7 +130,9 @@ nb-configuration.xml
 /public/ProfilePics
 /public/Signature
 #/public/dashboardAsset
-app/Config/App.php
+# app/Config/App.php must be committed: without it the app fails with
+# 'Class "Config\App" not found'. Per-machine values (baseURL) go in .env
+# or the Docker environment instead.
 /public/std_json
 
 docs/*
