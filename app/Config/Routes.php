@@ -67,6 +67,8 @@ $routes->get('print', 'PdfController::index', ['filter' => 'auth']);
 	$routes->match(['get', 'post'], 'register', 'User::register', ['filter' => 'auth']);
 	$routes->match(['get', 'post'], 'adminLogin', 'User::login', ['filter' => 'noauth']);
 	$routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
+	$routes->get('kpi', 'KpiController::index', ['filter' => 'auth']);
+	$routes->get('kpi/data', 'KpiController::data', ['filter' => 'auth']);
 	$routes->get('profile', 'User::profile', ['filter' => 'auth']);
 	$routes->get('logout', 'User::logout');
 	//userlogin

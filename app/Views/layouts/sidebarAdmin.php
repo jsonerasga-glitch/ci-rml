@@ -49,6 +49,7 @@ header("X-Frame-Options: SAMEORIGIN");
       <li class="nav-item" id='dashboard'>
         <a href="" onclick="window.location.href = '<?= base_url('/dashboard')?>'" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>              
       </li>
+      <li class="nav-item" id='kpi'><a href="" onclick="window.location.href = '<?= base_url('/kpi')?>'" class="nav-link"><i data-feather="bar-chart-2"></i><span>KPI Dashboard</span></a></li>
       <li class="nav-item " id='TSR'>
         <a href="" class="nav-link" onclick="window.location.href = '<?= base_url('/TSR/requests')?>'" ><i data-feather="clipboard"></i><span>TSR</span></a>
       </li>
