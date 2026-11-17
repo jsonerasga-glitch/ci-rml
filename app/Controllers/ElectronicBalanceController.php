@@ -335,6 +335,8 @@ class ElectronicBalanceController extends BaseController{
                 $dompdf->loadHtml(view('ElectronicBalance/electronicBalanceCertificate', $data), 'UTF-8');
                 $dompdf->setPaper('a4', 'portrait');
                 $dompdf->render();
+                // Keep the released (final) certificate for the customer portal.
+                \App\Libraries\CertificateQr::storeIssued('electronicBalance', $data, 'dataFromDB', $dompdf->output());
                 if($PDFState == '0'){
                     $dompdf->stream($certificateLabel.".pdf",array("Attachment" => 0));
                 }

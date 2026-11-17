@@ -23,6 +23,7 @@ class Filters extends BaseConfig
 		'honeypot' => Honeypot::class,
 		"auth" => Auth::class,
 		"noauth" => Noauth::class,
+		"customerauth" => \App\Filters\CustomerAuth::class,
 	];
 
 	/**

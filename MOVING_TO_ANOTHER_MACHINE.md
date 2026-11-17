@@ -78,8 +78,10 @@ php spark db:seed SampleShowcaseSeeder                                  # withou
 docker compose exec app php spark db:seed SampleShowcaseSeeder          # with Docker
 ```
 
-Logins (admin login page `/adminLogin`, password `Sample@2026`):
-`sample.officer@rml.local` and `sample.verifier@rml.local`. Re-running the seeder resets
+Logins (password `Sample@2026`):
+`sample.officer@rml.local` and `sample.verifier@rml.local` (staff, `/adminLogin`), and
+`sample.customer@rml.local` (customer portal, `/customer/login`). The customer has four
+requests (CR-SAMPLE-2026-0001 … 0004) at different stages of `systemFlow.png`. Re-running the seeder resets
 the sample records; real records are never touched. The data is in
 `app/Database/Data/sample_showcase.json`.
 

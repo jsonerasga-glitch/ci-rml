@@ -298,6 +298,8 @@ class Thermo_HygrometerController extends BaseController{
         $dompdf->loadHtml(view('Thermohygrometer/CalibrationCertificateThermo', $data), 'UTF-8');
         $dompdf->setPaper('a4', 'portrait');
         $dompdf->render();
+        // Keep the released (final) certificate for the customer portal.
+        \App\Libraries\CertificateQr::storeIssued('thermohygrometer', $data, 'thermoData', $dompdf->output());
         if($PDFState == '0'){
             $dompdf->stream($certificateLabel.".pdf",array("Attachment" => 0));
         }

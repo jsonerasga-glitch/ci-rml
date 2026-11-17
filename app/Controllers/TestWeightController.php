@@ -175,6 +175,8 @@ class TestWeightController extends BaseController{
         $dompdf->loadHtml(view('TestWeight/CalibrationCertificateTestWeight_NEW', $data), 'UTF-8');
         $dompdf->setPaper('a4', 'portrait');
         $dompdf->render();
+        // Keep the released (final) certificate for the customer portal.
+        \App\Libraries\CertificateQr::storeIssued('testWeight', $data, 'dataFromDB', $dompdf->output());
         if($PDFState == '0'){
             $dompdf->stream($certificateLabel.".pdf",array("Attachment" => 0));
         }

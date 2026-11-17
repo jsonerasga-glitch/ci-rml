@@ -58,7 +58,7 @@
                     <hr>
                     <button type="submit" class="btn btn-primary btn-lg text-center form-control mb-3 ">Login</button>
                     <div class="text-center">
-                        <a style="font-size: 12px;" href="/adminLogin" class="">Login as Admin</a>
+                        <a style="font-size: 12px;" href="/adminLogin" class="">Login as Admin</a> &middot; <a style="font-size: 12px;" href="<?= site_url('customer/login') ?>">Customer portal</a>
                     </div>
                     
                 </form>

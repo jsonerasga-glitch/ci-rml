@@ -24,7 +24,7 @@ class ExportDatabase extends BaseCommand
 	protected $description = 'Export schema and data to app/Database/Data for moving the project to another machine.';
 
 	/** Tables managed elsewhere: by CI itself or by their own migration. */
-	public const SCHEMA_EXCLUDE = ['migrations', 'certificate_verifications'];
+	public const SCHEMA_EXCLUDE = ['migrations', 'certificate_verifications', 'customer_accounts', 'calibration_requests', 'calibration_request_items'];
 	public const DATA_EXCLUDE   = ['migrations'];
 
 	private const ROWS_PER_INSERT = 50;

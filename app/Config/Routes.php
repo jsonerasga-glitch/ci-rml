@@ -69,6 +69,22 @@ $routes->get('print', 'PdfController::index', ['filter' => 'auth']);
 	$routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
 	$routes->get('kpi', 'KpiController::index', ['filter' => 'auth']);
 	$routes->get('kpi/data', 'KpiController::data', ['filter' => 'auth']);
+	// Customer portal (systemFlow.png): customer login, requests, tracking, certificates
+	$routes->match(['get', 'post'], 'customer/login', 'CustomerPortalController::login');
+	$routes->match(['get', 'post'], 'customer/register', 'CustomerPortalController::register');
+	$routes->get('customer/logout', 'CustomerPortalController::logout');
+	$routes->get('customer', 'CustomerPortalController::dashboard', ['filter' => 'customerauth']);
+	$routes->get('customer/requests/new', 'CustomerPortalController::newRequest', ['filter' => 'customerauth']);
+	$routes->post('customer/requests', 'CustomerPortalController::storeRequest', ['filter' => 'customerauth']);
+	$routes->get('customer/requests/(:num)', 'CustomerPortalController::showRequest/$1', ['filter' => 'customerauth']);
+	$routes->post('customer/requests/(:num)/cancel', 'CustomerPortalController::cancelRequest/$1', ['filter' => 'customerauth']);
+	$routes->get('customer/certificate/(:num)', 'CustomerPortalController::certificate/$1', ['filter' => 'customerauth']);
+	// Staff queue of customer requests
+	$routes->get('requests', 'RequestQueueController::index', ['filter' => 'auth']);
+	$routes->get('requests/(:num)', 'RequestQueueController::show/$1', ['filter' => 'auth']);
+	$routes->post('requests/(:num)/receive', 'RequestQueueController::receive/$1', ['filter' => 'auth']);
+	$routes->post('requests/(:num)/reject', 'RequestQueueController::reject/$1', ['filter' => 'auth']);
+	$routes->post('requests/item/(:num)/worksheet', 'RequestQueueController::createWorksheet/$1', ['filter' => 'auth']);
 	$routes->get('profile', 'User::profile', ['filter' => 'auth']);
 	$routes->get('logout', 'User::logout');
 	//userlogin

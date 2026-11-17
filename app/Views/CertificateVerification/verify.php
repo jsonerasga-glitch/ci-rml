@@ -135,6 +135,8 @@ if ($verification) {
 			</p>
 		<?php endif; ?>
 
+		<p class="note">Are you the customer? <a href="<?= site_url('customer/login') ?>">Log in to the customer portal</a> to download your released certificates.</p>
+
 		<?php if (! empty($about)) : ?>
 			<div class="contact">
 				Questions about this certificate?<br>

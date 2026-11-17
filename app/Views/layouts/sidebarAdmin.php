@@ -55,6 +55,8 @@ header("X-Frame-Options: SAMEORIGIN");
       <li class="nav-item" id='dashboard'>
         <a href="" onclick="window.location.href = '<?= base_url('/dashboard')?>'" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>              
       </li>
+      <?php $newRequests = \App\Controllers\RequestQueueController::newCount(); ?>
+      <li class="nav-item" id='requestQueue'><a href="" onclick="window.location.href = '<?= base_url('/requests')?>'" class="nav-link"><i data-feather="inbox"></i><span>Customer Requests</span><?php if ($newRequests): ?><span class="subBadge bg-danger ms-2"><?= $newRequests ?></span><?php endif; ?></a></li>
       <li class="nav-item" id='kpi'><a href="" onclick="window.location.href = '<?= base_url('/kpi')?>'" class="nav-link"><i data-feather="bar-chart-2"></i><span>KPI Dashboard</span></a></li>
       <li class="nav-item " id='TSR'>
         <a href="" class="nav-link" onclick="window.location.href = '<?= base_url('/TSR/requests')?>'" ><i data-feather="clipboard"></i><span>TSR</span></a>

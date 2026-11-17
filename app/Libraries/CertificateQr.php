@@ -94,6 +94,52 @@ class CertificateQr
 	}
 
 	/**
+	 * Keeps a copy of a FINAL certificate PDF when staff generate it, so the
+	 * customer portal can serve exactly what the laboratory released (including
+	 * the browser-drawn chart that cannot be re-created on the server).
+	 * Drafts are never stored. Failures are logged and never block printing.
+	 *
+	 * @param array $data The view data after attach() (holds certificateQr + the record).
+	 */
+	public static function storeIssued(string $module, array $data, string $recordKey, string $pdf): void
+	{
+		$record = $data[$recordKey] ?? null;
+		$qr     = $data['certificateQr'] ?? null;
+		if (! is_array($record) || empty($record['id']) || $pdf === '') {
+			return;
+		}
+		if (self::isDraft($record, $data['imageDraft'] ?? null) || (is_array($qr) && ! empty($qr['isDraft']))) {
+			return;
+		}
+
+		try {
+			$dir = self::issuedDir();
+			if (! is_dir($dir)) {
+				mkdir($dir, 0775, true);
+			}
+			file_put_contents($dir . $module . '-' . (int) $record['id'] . '.pdf', $pdf);
+		} catch (\Throwable $e) {
+			log_message('error', 'Issued certificate could not be stored for {module} #{id}: {message}', [
+				'module' => $module, 'id' => $record['id'], 'message' => $e->getMessage(),
+			]);
+		}
+	}
+
+	/** Path of the stored final certificate, or null if none was released yet. */
+	public static function issuedFile(string $module, int $recordId): ?string
+	{
+		$file = self::issuedDir() . $module . '-' . $recordId . '.pdf';
+
+		return is_file($file) ? $file : null;
+	}
+
+	/** Inside writable/uploads so it lives on the Docker uploads volume. */
+	private static function issuedDir(): string
+	{
+		return WRITEPATH . 'uploads/certificates/';
+	}
+
+	/**
 	 * Mirrors the watermark rule used by the certificate views.
 	 */
 	public static function isDraft(array $record, $imageDraft): bool
