@@ -182,6 +182,7 @@ class CaliperController extends BaseController{
         
                 $certificateLabel = $this->request->getPost('certificateLabel');
                 $customPaper = array(0, 0, 595.28, 841.89); 
+                $data = \App\Libraries\CertificateQr::attach($data, 'caliper', 'dataFromDB');
                 $dompdf = new \Dompdf\Dompdf($options); 
                 $dompdf->loadHtml(view('Caliper/caliperCertificate', $data), 'UTF-8');
                 $dompdf->setPaper('a4', 'portrait');

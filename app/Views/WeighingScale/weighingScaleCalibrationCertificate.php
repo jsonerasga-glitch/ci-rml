@@ -420,6 +420,7 @@
         <!-- HEADER -->
             <div>
                 <div style="position:relative; font-family: DejaVu Sans;">
+                    <?= view('templates/certificateQr', ['certificateQr' => $certificateQr ?? null]) ?>
                     <img src="<?php echo $base64; ?>" alt="DOST LOGO" height='80px' style="position: absolute; top:0 ">
                     <div style="position: absolute; line-height: 0.4; left:90px">
                         <p style="position: relative; font-size: 13px;">Republic of the Philippines</p>
@@ -737,6 +738,7 @@
         <!-- HEADER -->
             <div>
                 <div style="position:relative; font-family: DejaVu Sans;">
+                    <?= view('templates/certificateQr', ['certificateQr' => $certificateQr ?? null]) ?>
                     <img src="<?php echo $base64; ?>" alt="DOST LOGO" height='80px' style="position: absolute; top:0 ">
                     <div style="position: absolute; line-height: 0.4; left:90px">
                         <p style="position: relative; font-size: 13px;">Republic of the Philippines</p>
@@ -1009,6 +1011,7 @@
         <!-- HEADER -->
             <div>
                 <div style="position:relative; font-family: DejaVu Sans;">
+                    <?= view('templates/certificateQr', ['certificateQr' => $certificateQr ?? null]) ?>
                     <img src="<?php echo $base64; ?>" alt="DOST LOGO" height='80px' style="position: absolute; top:0 ">
                     <div style="position: absolute; line-height: 0.4; left:90px">
                         <p style="position: relative; font-size: 13px;">Republic of the Philippines</p>

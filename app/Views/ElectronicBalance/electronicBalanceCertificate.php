@@ -655,6 +655,7 @@
  
 <body>
     <header style="line-height: 0;">
+        <?= view('templates/certificateQr', ['certificateQr' => $certificateQr ?? null]) ?>
         <img src="<?php echo $base64; ?>" alt="DOST LOGO" height='80px' style="position: absolute; top:0" > 
         <p style="position: absolute; top:0; left:80; font-size: 13px;">Republic of the Philippines</p>
         <p style="position: absolute; top:14; left:80; font-size: 13px; color:blue">DEPARTMENT OF SCIENCE AND TECHNOLOGY</p>

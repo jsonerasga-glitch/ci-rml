@@ -38,6 +38,9 @@ $routes->setAutoRoute(true);
 //$routes->get('dashboardAdmin', 'DashboardController::dashboardAdmin');
 //$routes->get('/', 'Home::index');
 
+// Public page opened by scanning the QR code printed on certificates (no login required).
+$routes->get('certificate/verify/(:segment)', 'CertificateVerification::verify/$1');
+
 /*
 $routes->get('table', 'CrudController::index', ['filter' => 'auth']);
 $routes->post('rml-store', 'CrudController::store', ['filter' => 'auth']);

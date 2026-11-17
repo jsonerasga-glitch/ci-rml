@@ -330,6 +330,7 @@ class ElectronicBalanceController extends BaseController{
 
                 $certificateLabel = $this->request->getPost('certificateLabel');
                 $customPaper = array(0, 0, 595.28, 841.89); 
+                $data = \App\Libraries\CertificateQr::attach($data, 'electronicBalance', 'dataFromDB');
                 $dompdf = new \Dompdf\Dompdf($options); 
                 $dompdf->loadHtml(view('ElectronicBalance/electronicBalanceCertificate', $data), 'UTF-8');
                 $dompdf->setPaper('a4', 'portrait');

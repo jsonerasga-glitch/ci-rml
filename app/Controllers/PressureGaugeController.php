@@ -379,6 +379,7 @@ class PressureGaugeController extends BaseController{
 
                 $certificateLabel = $this->request->getPost('certificateLabel');
                 $customPaper = array(0, 0, 595.28, 841.89); 
+                $data = \App\Libraries\CertificateQr::attach($data, 'pressureGauge', 'dataFromDB');
                 $dompdf = new \Dompdf\Dompdf($options);
                 $obLevel = ob_get_level();
                 try{
