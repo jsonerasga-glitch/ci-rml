@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Shell scripts run inside the Linux container: must keep LF endings on every OS.
+*.sh text eol=lf
+# Large generated SQL dumps: keep byte-for-byte, no diff noise.
+app/Database/Data/*.sql -text -diff
